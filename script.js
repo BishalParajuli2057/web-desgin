@@ -22,4 +22,10 @@ document.getElementById('user-form').addEventListener('submit', function(event) 
     
     document.getElementById('user-form').reset();
 });
-  
+
+document.getElementById('empty-table').addEventListener('click', function() {
+    const table = document.getElementById('user-table');
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+});

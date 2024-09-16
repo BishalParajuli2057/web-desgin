@@ -1,60 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js" defer></script> 
-  <title>Dynamic Table</title>
-  <title>User Table</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Table</title>
     <style>
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+        table, th, td {
             border: 1px solid black;
-            padding: 8px;
+        }
+        th, td {
+            padding: 10px;
             text-align: left;
         }
-        th {
-            background-color: #f2f2f2;
+        img {
+            width: 64px;
+            height: 64px;
         }
     </style>
 </head>
 <body>
-    <h2>User Table</h2>
+    <h1>User Table</h1>
+
     <table id="user-table">
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Admin</th>
-        </tr>
-        <tr>
-            <td>Webmaster</td>
-            <td>example@email.com</td>
-            <td>X</td>
-        </tr>
-        <tr>
-            <td>User123</td>
-            <td>example@email.com</td>
-            <td>-</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Webmaster</td>
+                <td>example@email.com</td>
+                <td>X</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>User123</td>
+                <td>example@email.com</td>
+                <td>-</td>
+                <td></td>
+            </tr>
+        </tbody>
     </table>
 
-    <h2>Add User</h2>
+    <h2>Add/Edit User</h2>
     <form id="user-form">
-        <label for="input-username">Username:</label>
-        <input type="text" id="input-username" name="username" required><br><br>
-        <label for="input-email">Email:</label>
-        <input type="email" id="input-email" name="email" required><br><br>
-        <label for="input-admin">Admin:</label>
-        <input type="checkbox" id="input-admin" name="admin"><br><br>
-        <button type="submit" id="submit-data">Add User</button>
-    </form>
-    <br>
-    <button id="empty-table">Empty Table</button>
+        <label for="input-username">Username: </label>
+        <input type="text" id="input-username" required><br><br>
 
-  
+        <label for="input-email">Email: </label>
+        <input type="email" id="input-email" required><br><br>
+
+        <label for="input-admin">Admin: </label>
+        <input type="checkbox" id="input-admin"><br><br>
+
+        <label for="input-image">Image: </label>
+        <input type="file" id="input-image" accept="image/*"><br><br>
+
+        <button id="submit-data">Submit</button>
+        <button id="empty-table" type="button">Empty Table</button>
+    </form>
+
+    <script src="script.js"></script>
 </body>
 </html>
 

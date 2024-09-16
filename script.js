@@ -1,19 +1,61 @@
-document.getElementById("my-button").addEventListener("click",function(){console.log("Hello world")});
+document.getElementById('submit-data').addEventListener('click', function(event) {
+    event.preventDefault();
 
-document.getElementById("my-button").addEventListener("click", function() {
-    console.log("Hello world");
-    document.querySelector("h1").textContent = "Moi maailma";
+    const username = document.getElementById('input-username').value;
+    const email = document.getElementById('input-email').value;
+    const isAdmin = document.getElementById('input-admin').checked ? 'X' : '-';
+    const imageInput = document.getElementById('input-image').files[0];
+
+    const existingRow = findRowByUsername(username);
+    
+    let imgTag = '<img src="https://via.placeholder.com/64" alt="Default Image">';
+    if (imageInput) {
+        const imageUrl = URL.createObjectURL(imageInput);
+        imgTag = `<img src="${imageUrl}" alt="${username}'s Profile Image">`;
+    }
+
+    if (existingRow) {
+       
+        existingRow.cells[1].textContent = email;
+        existingRow.cells[2].textContent = isAdmin;
+        existingRow.cells[3].innerHTML = imgTag;
+    } else {
+     
+        const table = document.getElementById('user-table').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        const usernameCell = newRow.insertCell(0);
+        const emailCell = newRow.insertCell(1);
+        const adminCell = newRow.insertCell(2);
+        const imageCell = newRow.insertCell(3);
+
+     
+        usernameCell.textContent = username;
+        emailCell.textContent = email;
+        adminCell.textContent = isAdmin;
+        imageCell.innerHTML = imgTag;
+    }
+
+    document.getElementById('input-username').value = '';
+    document.getElementById('input-email').value = '';
+    document.getElementById('input-admin').checked = false;
+    document.getElementById('input-image').value = '';
 });
 
-document.getElementById("add-data").addEventListener("click", function() {
-    const li = document.createElement("li");
-    li.textContent = "This is a list item";
-    document.getElementById("my-list").appendChild(li);
+document.getElementById('empty-table').addEventListener('click', function() {
+    const tableBody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
+
+    while (tableBody.rows.length > 0) {
+        tableBody.deleteRow(0);
+    }
 });
 
-document.getElementById("add-data").addEventListener("click", function() {
-    const text = document.getElementById("my-textarea").value;
-    const li = document.createElement("li");
-    li.textContent = text;
-    document.getElementById("my-list").appendChild(li);
-});
+
+function findRowByUsername(username) {
+    const rows = document.getElementById('user-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    for (let row of rows) {
+        if (row.cells[0].textContent === username) {
+            return row;
+        }
+    }
+    return null;
+}

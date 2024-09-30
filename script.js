@@ -1,51 +1,29 @@
-document.getElementById('submit-data').addEventListener('click', function (event) {
-    event.preventDefault();
+document.getElementById('submit-data').addEventListener('click', function() {
+    const showName = document.getElementById('input-show').value;
+    const showContainer = document.getElementById('show-container');
 
-    const username = document.getElementById('input-username').value;
-    const email = document.getElementById('input-email').value;
-    const isAdmin = document.getElementById('input-admin').checked ? 'X' : '-';
-    const imageInput = document.getElementById('input-image').files[0];
+    showContainer.innerHTML = '';
 
-    const table = document.getElementById('user-table').getElementsByTagName('tbody')[0];
-    let rows = table.getElementsByTagName('tr');
-    let userExists = false;
-    let existingRow;
+    fetch(`https://api.tvmaze.com/search/shows?q=${showName}`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                const show = item.show;
+                const showElement = document.createElement('div');
+                showElement.classList.add('show-data');
+               
+                const image = show.image ? show.image.medium : 'https://via.placeholder.com/210x295?text=No+Image';
+                
+                showElement.innerHTML = `
+                    <img src="${image}" alt="${show.name}">
+                    <div class="show-info">
+                        <h1>${show.name}</h1>
+                        <p>${show.summary || 'No summary available.'}</p>
+                    </div>
+                `;
 
-    for (let i = 0; i < rows.length; i++) {
-        if (rows[i].cells[0].textContent === username) {
-            userExists = true;
-            existingRow = rows[i];
-            break;
-        }
-    }
-
-    
-    let imageElement = '';
-    if (imageInput) {
-        const imageURL = URL.createObjectURL(imageInput);
-        imageElement = `<img src="${imageURL}" alt="${username}">`;
-    }
-
-    if (userExists) {
-        
-        existingRow.cells[1].textContent = email;
-        existingRow.cells[2].textContent = isAdmin;
-        existingRow.cells[3].innerHTML = imageElement;
-    } else {
-       
-        const newRow = table.insertRow();
-        newRow.insertCell(0).textContent = username;
-        newRow.insertCell(1).textContent = email;
-        newRow.insertCell(2).textContent = isAdmin;
-        newRow.insertCell(3).innerHTML = imageElement;
-    }
-
-    
-    document.getElementById('user-form').reset();
+                showContainer.appendChild(showElement);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
 });
-
-document.getElementById('empty-table').addEventListener('click', function () {
-    const tableBody = document.getElementById('user-table').getElementsByTagName('tbody')[0];
-    tableBody.innerHTML = '';  
-});
-

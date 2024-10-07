@@ -1,29 +1,30 @@
-document.getElementById('submit-data').addEventListener('click', function() {
-    const showName = document.getElementById('input-show').value;
-    const showContainer = document.getElementById('show-container');
-
-    showContainer.innerHTML = '';
-
-    fetch(`https://api.tvmaze.com/search/shows?q=${showName}`)
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(item => {
-                const show = item.show;
-                const showElement = document.createElement('div');
-                showElement.classList.add('show-data');
-               
-                const image = show.image ? show.image.medium : 'https://via.placeholder.com/210x295?text=No+Image';
-                
-                showElement.innerHTML = `
-                    <img src="${image}" alt="${show.name}">
-                    <div class="show-info">
-                        <h1>${show.name}</h1>
-                        <p>${show.summary || 'No summary available.'}</p>
-                    </div>
-                `;
-
-                showContainer.appendChild(showElement);
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
+const map = L.map('map', {
+    minZoom: -3
 });
+
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+fetch("https://geo.stat.fi/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta4500k&outputFormat=json&srsName=EPSG:4326")
+    .then(response => response.json())
+    .then(data => {
+       
+        const geojsonLayer = L.geoJSON(data, {
+            weight: 2,
+            onEachFeature: function (feature, layer) {
+                
+                if (feature.properties && feature.properties.nimi) {
+                    layer.bindTooltip(feature.properties.nimi, {
+                        sticky: true
+                    });
+                }
+            }
+        }).addTo(map);
+
+        
+        map.fitBounds(geojsonLayer.getBounds());
+    })
+    .catch(err => console.error('Error loading GeoJSON data:', err));

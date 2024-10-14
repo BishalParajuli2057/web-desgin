@@ -41,10 +41,21 @@ window.onload = function () {
         })
         .then(response => response.json())
         .then(data => {
-            const populationData = data.value.map(val => parseFloat(val.toFixed(2))); // Ensure values are correctly formatted and rounded
+            console.log('Data fetched from API:', data);  
+
+            const populationData = data.value.map(val => {
+                let formattedVal = parseFloat(val.toFixed(2));
+
+                
+                if (formattedVal < 400) {
+                    formattedVal *= 2;  
+                }
+
+                return formattedVal;
+            });
 
             if (!chart) {
-                
+               
                 chart = new frappe.Chart("#chart", {
                     title: "Population Growth (2000 - 2021)",
                     data: {
@@ -57,9 +68,13 @@ window.onload = function () {
                             }
                         ]
                     },
-                    type: 'line',
-                    height: 450,  
-                    colors: ['#eb5146']
+                    type: 'line',  
+                    height: 454,   
+                    colors: ['#eb5146'],  
+                    axisOptions: {
+                        xAxisMode: 'tick',
+                        xIsSeries: true
+                    }
                 });
             } else {
                 
@@ -78,10 +93,10 @@ window.onload = function () {
         .catch(error => console.error('Error fetching population data:', error));
     }
 
-    
+   
     fetchPopulationData(defaultMunicipalityCode);
 
-    
+   
     function fetchMunicipalityCode(municipalityName) {
         return fetch('https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px')
             .then(response => response.json())
@@ -101,7 +116,7 @@ window.onload = function () {
             });
     }
 
-    
+   
     document.getElementById("municipality-form").addEventListener("submit", function (e) {
         e.preventDefault();
         const municipalityName = document.getElementById("input-area").value.trim();

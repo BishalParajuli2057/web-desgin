@@ -1,9 +1,8 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     text-align: center;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+    margin-top: 50px;
 }
 
 h1 {
@@ -11,32 +10,6 @@ h1 {
 }
 
 #chart {
-    margin: 0 auto;
-    width: 80%;
     max-width: 600px;
-    height: 454px;
-}
-
-form {
-    margin: 20px 0;
-}
-
-#input-area {
-    padding: 10px;
-    font-size: 16px;
-    width: 250px;
-    margin-right: 10px;
-}
-
-#submit-data {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #eb5146;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-#submit-data:hover {
-    background-color: #d1463c;
+    margin: 0 auto;
 }

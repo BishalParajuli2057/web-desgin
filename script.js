@@ -3,7 +3,7 @@ window.onload = function () {
     const years = ["2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"];
     let chart;
 
-
+   
     function fetchPopulationData(municipalityCode) {
         fetch('https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px', {
             method: 'POST',
@@ -41,7 +41,7 @@ window.onload = function () {
         })
         .then(response => response.json())
         .then(data => {
-            const populationData = data.value;
+            const populationData = data.value.map(val => parseFloat(val.toFixed(2))); // Ensure values are correctly formatted and rounded
 
             if (!chart) {
                 
@@ -58,11 +58,11 @@ window.onload = function () {
                         ]
                     },
                     type: 'line',
-                    height: 450,
+                    height: 450,  
                     colors: ['#eb5146']
                 });
             } else {
-               
+                
                 chart.update({
                     labels: years,
                     datasets: [
@@ -78,7 +78,7 @@ window.onload = function () {
         .catch(error => console.error('Error fetching population data:', error));
     }
 
-  
+    
     fetchPopulationData(defaultMunicipalityCode);
 
     
@@ -117,6 +117,7 @@ window.onload = function () {
         }
     });
 };
+
 
 
 
